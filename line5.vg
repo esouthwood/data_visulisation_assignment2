@@ -1,0 +1,56 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "Stock prices of 5 Tech Companies over Time.",
+    "data": {"url": "world_energy_consumption.csv"},
+    "mark": {
+      "type": "line",
+      "point": "true"
+    },
+    "transform": [
+        {
+            "timeUnit":"year",
+            "field": "year",
+            "as": "year"
+          },
+          {"filter": {"field": "year", 
+          "range": [  {"year": 2005},
+                      {"year": 2022}]
+                    }},
+
+    ],
+    "encoding": {
+      "x": {
+        "timeUnit": "year", 
+        "field": "year",
+        "scale": {
+            "domain": [{"year": 2005}, {"year": 2020}]
+        }
+    },
+      "y": {
+        "aggregate":"mean",
+        "field": "solar_share_elec",
+        "type": "quantitative"
+    },
+      "color": {"field": "continent", "type": "nominal"}
+    },
+    "layer": [{
+        "mark": "line"
+      }, {
+        "params": [{
+          "name": "hover",
+          "select": {"type": "point", "on": "mouseover", "clear": "mouseout"}
+        }],
+        "mark": {"type": "circle", "tooltip": true},
+        "encoding": {
+          "opacity": {
+            "condition": {"test": {"param": "hover", "empty": false}, "value": 1},
+            "value": 0
+          },
+          "size": {
+            "condition": {"test": {"param": "hover", "empty": false}, "value": 48},
+            "value": 100
+          }
+        }
+      }]
+  }
+  
